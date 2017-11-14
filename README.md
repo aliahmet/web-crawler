@@ -22,7 +22,7 @@ crawler.crawl(url)
 result = crawler.dump()
 
 # You can use your own http client or encoder
-class SuperFastCsvWebCrawler():
+class SuperFastCsvWebCrawler(WebCrawler):
     storage_class = SuperFastUrlStorage
     http_client_class = SuperFastHttpClient
     encoder_class = CSVGenerator
