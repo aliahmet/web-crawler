@@ -1,10 +1,14 @@
 class SitemapGenerator:
+    """
+    Turn storage in to sitemap xml string
+    """
+
     def __init__(self, data):
         self.data = data
 
     def dumps(self, indent=4):
         """
-
+        Returns encoded xml string
         """
         lines = [
             '<?xml version="1.0" encoding="UTF-8"?>',

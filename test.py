@@ -3,7 +3,14 @@ from unittest import TestCase
 
 
 class TestEncoder(TestCase):
+    """
+    Encoder Tests
+    """
+
     def test_check_simple_encoder(self):
+        """
+        Check: Is Storage with 1 entry generates a valid sitemap ?
+        """
         from encoders import SitemapGenerator
         from storage import UrlStorage
         storage = UrlStorage()
@@ -21,6 +28,9 @@ class TestEncoder(TestCase):
         self.assertEqual(expected, dumped_result)
 
     def test_check_location_override(self):
+        """
+        Check: Does location overloading while registering works ?
+        """
         from encoders import SitemapGenerator
         from storage import UrlStorage
         storage = UrlStorage()
@@ -38,6 +48,9 @@ class TestEncoder(TestCase):
         self.assertEqual(expected, dumped_result)
 
     def test_check_no_location(self):
+        """
+        Check: Does default location is the same as url ?
+        """
         from encoders import SitemapGenerator
         from storage import UrlStorage
         storage = UrlStorage()
@@ -53,6 +66,9 @@ class TestEncoder(TestCase):
         self.assertEqual(expected, dumped_result)
 
     def test_check_encode_with_props(self):
+        """
+        Check: Does different props registered correctly ?
+        """
         from encoders import SitemapGenerator
         from storage import UrlStorage
         storage = UrlStorage()
@@ -74,7 +90,14 @@ class TestEncoder(TestCase):
 
 
 class TestStorage(TestCase):
+    """
+    Storage Tests
+    """
+
     def test_check_storage_add(self):
+        """
+        Check: Can add multiple addresses ?
+        """
         from storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
@@ -83,6 +106,9 @@ class TestStorage(TestCase):
         self.assertEqual(3, len(list(storage.urls.values())))
 
     def test_check_storage_remove(self):
+        """
+        Check: Can remove  addresses ?
+        """
         from storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
@@ -91,6 +117,9 @@ class TestStorage(TestCase):
         self.assertEqual(1, len(list(storage.urls.values())))
 
     def test_check_storage_remove_nonexisting(self):
+        """
+        Check: Can remove  non-existing addresses ?
+        """
         from storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
@@ -103,6 +132,9 @@ class TestStorage(TestCase):
             assert "No exception raised"
 
     def test_iter_all_links(self):
+        """
+        Check: Can iterate all addresses right?
+        """
         from storage import UrlStorage
         storage = UrlStorage()
         links = [
@@ -120,7 +152,14 @@ class TestStorage(TestCase):
 
 
 class TestParser(TestCase):
+    """
+    Parser Tests
+    """
+
     def test_parse_links(self):
+        """
+        Check: Can parse a absolute url?
+        """
         from main import WebCrawler
         base_url = "http://example.com/"
         html = '<html>' \
@@ -131,6 +170,9 @@ class TestParser(TestCase):
         self.assertEqual(links, ['http://example.com/aa.html'])
 
     def test_parse_relative_links(self):
+        """
+        Check: Can convert a relative link in to absolute link correctly?
+        """
         from main import WebCrawler
         base_url = "http://example.com/"
         html = '<html>' \
@@ -141,6 +183,9 @@ class TestParser(TestCase):
         self.assertEqual(links, ['http://example.com/aa.html'])
 
     def test_parse_inner_root_links(self):
+        """
+        Check: Can convert a relative root link in to absolute link correctly?
+        """
         from main import WebCrawler
         base_url = "http://example.com/aa/bb/vv"
         html = '<html>' \
@@ -151,6 +196,9 @@ class TestParser(TestCase):
         self.assertEqual(links, ['http://example.com/aa.html'])
 
     def test_parse_inner_parent_links(self):
+        """
+        Check: Can convert a relative parent link in to absolute link correctly?
+        """
         from main import WebCrawler
         base_url = "http://example.com/aa/bb/"
         html = '<html>' \
@@ -161,6 +209,9 @@ class TestParser(TestCase):
         self.assertEqual(links, ['http://example.com/aa/cc.html'])
 
     def test_parse_external_links(self):
+        """
+        Check: Can keep a full external link?
+        """
         from main import WebCrawler
         base_url = "http://example.com/aa/bb/"
         html = '<html>' \

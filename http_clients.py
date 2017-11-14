@@ -3,6 +3,9 @@ from datetime import datetime
 
 
 class HttpClient:
+    """
+    Wrapper for requests for web communication
+    """
     HTTP_RESPONSE_OK = 200
 
     def __init__(self, keep_alive):

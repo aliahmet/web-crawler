@@ -1,4 +1,8 @@
 class UrlStorage():
+    """
+    Wrapper for a dict object to store visited urls along
+     with other props
+    """
     def __init__(self):
         self.urls = {}
 

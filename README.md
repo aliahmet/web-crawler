@@ -31,6 +31,7 @@ class SuperFastCsvWebCrawler():
 ```
 #### Design Notes
 
++ All links are stored and visited with absolute urls in order to prevent duplicates
 
 + Helper classes are pluggable, for instance, 
 you can put your own csv encoder.
@@ -55,7 +56,7 @@ to crawl very big pages we may think of possible optimizations:
 
 ####  Test:
 
-There is a unit test coverege for modules:
+There is a unit test coverege:
 
 ```bash
 pytest test.py
