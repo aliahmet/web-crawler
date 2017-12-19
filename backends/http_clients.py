@@ -17,7 +17,7 @@ class HttpClient:
     def get(self, url):
         return requests.get(url)
 
-    def check_if_response_is_html(self, response):
+    def is_html(self, response):
         return "text/html" in response.headers.get("Content-Type", "text/plain").split(";")
         # Header may contain encoding. ex: `Content-Type: text/html; utf-8`
 
@@ -27,5 +27,5 @@ class HttpClient:
                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def can_crawl(self, response):
-        return self.check_if_response_is_html(response) and \
+        return self.is_html(response) and \
                self.get_last_modified(response)

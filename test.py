@@ -11,13 +11,13 @@ class TestEncoder(TestCase):
         """
         Check: Is Storage with 1 entry generates a valid sitemap ?
         """
-        from encoders import SitemapGenerator
-        from storage import UrlStorage
+        from backends.encoders import SitemapEncoder
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/", {
             "loc": "http://example.com/"
         })
-        dumped_result = SitemapGenerator(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(storage).dumps(indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -31,13 +31,13 @@ class TestEncoder(TestCase):
         """
         Check: Does location overloading while registering works ?
         """
-        from encoders import SitemapGenerator
-        from storage import UrlStorage
+        from backends.encoders import SitemapEncoder
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/", {
             "loc": "http://example.com/index.html"
         })
-        dumped_result = SitemapGenerator(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(storage).dumps(indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -51,11 +51,11 @@ class TestEncoder(TestCase):
         """
         Check: Does default location is the same as url ?
         """
-        from encoders import SitemapGenerator
-        from storage import UrlStorage
+        from backends.encoders import SitemapEncoder
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
-        dumped_result = SitemapGenerator(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(storage).dumps(indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -69,8 +69,8 @@ class TestEncoder(TestCase):
         """
         Check: Does different props registered correctly ?
         """
-        from encoders import SitemapGenerator
-        from storage import UrlStorage
+        from backends.encoders import SitemapEncoder
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/", OrderedDict(
             (
@@ -78,7 +78,7 @@ class TestEncoder(TestCase):
                 ("loc", "http://example.com/"),
             )
         ))
-        dumped_result = SitemapGenerator(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(storage).dumps(indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -98,7 +98,7 @@ class TestStorage(TestCase):
         """
         Check: Can add multiple addresses ?
         """
-        from storage import UrlStorage
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
@@ -109,7 +109,7 @@ class TestStorage(TestCase):
         """
         Check: Can remove  addresses ?
         """
-        from storage import UrlStorage
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
@@ -120,7 +120,7 @@ class TestStorage(TestCase):
         """
         Check: Can remove  non-existing addresses ?
         """
-        from storage import UrlStorage
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
@@ -135,7 +135,7 @@ class TestStorage(TestCase):
         """
         Check: Can iterate all addresses right?
         """
-        from storage import UrlStorage
+        from backends.storage import UrlStorage
         storage = UrlStorage()
         links = [
             "http://example.com/",

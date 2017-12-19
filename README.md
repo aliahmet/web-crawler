@@ -21,11 +21,16 @@ crawler = WebCrawler()
 crawler.crawl(url)
 result = crawler.dump()
 
-# You can use your own http client or encoder
+# You can use your own backends
 class SuperFastCsvWebCrawler(WebCrawler):
+    # Custom Backend Classes
     storage_class = SuperFastUrlStorage
     http_client_class = SuperFastHttpClient
-    encoder_class = CSVGenerator
+    encoder_class = CSVEncoder
+    
+    def get_to_visit_queue():
+        # Custom initilize
+        return RedisQueue(host="127.0.0.1", port=6379, db=2)
 
 
 ```

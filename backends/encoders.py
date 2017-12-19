@@ -1,10 +1,15 @@
-class SitemapGenerator:
+class BaseEncoder:
+    def __init__(self, data):
+        self.data = data
+
+    def dumps(self, indent=4):
+        raise NotImplemented("Encoder must have dumps method")
+
+
+class SitemapEncoder(BaseEncoder):
     """
     Turn storage in to sitemap xml string
     """
-
-    def __init__(self, data):
-        self.data = data
 
     def dumps(self, indent=4):
         """

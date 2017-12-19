@@ -5,9 +5,11 @@ from urllib.parse import urljoin
 
 import lxml.html
 
-from encoders import SitemapGenerator
-from http_clients import HttpClient
-from storage import UrlStorage
+from backends.encoders import SitemapEncoder
+from backends.http_clients import HttpClient
+from backends.queues import Queue
+from backends.sets import Set
+from backends.storage import UrlStorage
 
 logger = logging.getLogger(__name__)
 
@@ -15,14 +17,33 @@ logger = logging.getLogger(__name__)
 class WebCrawler():
     storage_class = UrlStorage
     http_client_class = HttpClient
-    encoder_class = SitemapGenerator
+    encoder_class = SitemapEncoder
+    to_visit_queue_class = Queue
+    visited_set_class = Set
+
 
     def __init__(self, exclude_broken_links=False, keep_alive=False):
         self.keep_alive = keep_alive
         self.exclude_broken_links = exclude_broken_links
 
-        self.crawled_pages = self.storage_class()
-        self.http_client = self.http_client_class(self.keep_alive)
+        self.crawled_pages = self.get_crawled_pages_storage()
+        self.http_client = self.get_http_client()
+        self.to_visit = self.get_to_visit_queue()
+        self.visited_set = self.get_visited_set()
+
+    def get_visited_set(self):
+        return self.visited_set_class()
+
+    def get_to_visit_queue(self):
+        return self.to_visit_queue_class()
+
+    def get_http_client(self):
+        return self.http_client_class(self.keep_alive)
+
+    def get_crawled_pages_storage(self):
+        return self.storage_class()
+
+
 
     def normalize_url(self, base_url, url):
         """
@@ -60,11 +81,10 @@ class WebCrawler():
         base_url = base_url or urljoin(start_url, ".")
         # Limit sub pages to parent of starting page if not specified
 
-        visited = {"start_url"}
-        to_visit = [start_url]
+        self.to_visit.push(start_url)
 
-        while to_visit:
-            current_page = to_visit.pop()
+        while not self.to_visit.is_empty():
+            current_page = self.to_visit.pop()
             logger.info("Visiting: %s" % current_page)
             response = self.http_client.get(current_page)
 
@@ -82,10 +102,10 @@ class WebCrawler():
 
             child_links = self.parse_links(current_page, response.content)
             for child_link in child_links:
-                if child_link not in visited and not self.is_external(base_url, child_link):
-                    logging.info("%s -> %s" % (current_page, child_link))
-                    to_visit.append(child_link)
-                    visited.add(child_link)
+                if child_link not in self.visited_set and not self.is_external(base_url, child_link):
+                    logger.info("%s -> %s" % (current_page, child_link))
+                    self.to_visit.push(child_link)
+                    self.visited_set.add(child_link)
         return self.crawled_pages
 
     def dump(self, indent=4):
