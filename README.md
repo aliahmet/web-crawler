@@ -30,7 +30,7 @@ class SuperFastCsvWebCrawler(WebCrawler):
     
     def get_to_visit_queue():
         # Custom initilize
-        return RedisQueue(host="127.0.0.1", port=6379, db=2)
+        return RedisQueue(self.opts, host="127.0.0.1", port=6379, db=2)
 
 
 ```
@@ -45,13 +45,11 @@ you can put your own csv encoder.
 unregistered are all in O(1).   
 
 + I preferred BFS over DFS because 1. page order is more natural, 2. 
-recursive graph uses a lot of memory.
+recursive graph uses a lot of memory, 3. Supports multiple workers.
 
 + I joined xml tag strings to create final xml instead of using a real 
 encoder to keep it simple. (as mentinoed above it is very simple to use
  a more broad encoder)
- 
-+ In order to keep it simple & clean, there is no type-checking.
 
 + This project first crawls everything then writes into file, if we want 
 to crawl very big pages we may think of possible optimizations:

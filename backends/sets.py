@@ -1,4 +1,8 @@
 class BaseSet:
+
+    def __init__(self, crawler_opts):
+        self.crawler_opts = crawler_opts
+
     def __contains__(self, item):
         raise NotImplemented("Set must have __contains__ method")
 
@@ -10,7 +14,8 @@ class BaseSet:
 
 
 class Set(BaseSet):
-    def __init__(self):
+    def __init__(self, crawler_opts):
+        super().__init__(crawler_opts)
         self.set = set()
 
     def __contains__(self, item):

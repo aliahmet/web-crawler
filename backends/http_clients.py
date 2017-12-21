@@ -8,8 +8,9 @@ class HttpClient:
     """
     HTTP_RESPONSE_OK = 200
 
-    def __init__(self, keep_alive):
-        if keep_alive:
+    def __init__(self, crawler_opts):
+        self.crawler_opts = crawler_opts
+        if crawler_opts.keep_alive:
             self.handler = requests.session()
         else:
             self.handler = requests

@@ -1,4 +1,7 @@
 class BaseUrlStorage:
+    def __init__(self, crawler_opts):
+        self.crawler_opts = crawler_opts
+
     def register_url(self, url, props=None):
         raise NotImplemented("UrlStorage must have register_url method")
 
@@ -17,7 +20,8 @@ class UrlStorage(BaseUrlStorage):
      with other props
     """
 
-    def __init__(self):
+    def __init__(self, crawler_opts):
+        super().__init__(crawler_opts)
         self.urls = {}
 
     def register_url(self, url, props=None):

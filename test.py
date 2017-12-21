@@ -13,11 +13,11 @@ class TestEncoder(TestCase):
         """
         from backends.encoders import SitemapEncoder
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/", {
             "loc": "http://example.com/"
         })
-        dumped_result = SitemapEncoder(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(None).dumps(storage, indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -33,11 +33,11 @@ class TestEncoder(TestCase):
         """
         from backends.encoders import SitemapEncoder
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/", {
             "loc": "http://example.com/index.html"
         })
-        dumped_result = SitemapEncoder(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(None).dumps(storage, indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -53,9 +53,9 @@ class TestEncoder(TestCase):
         """
         from backends.encoders import SitemapEncoder
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/")
-        dumped_result = SitemapEncoder(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(None).dumps(storage, indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -71,14 +71,14 @@ class TestEncoder(TestCase):
         """
         from backends.encoders import SitemapEncoder
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/", OrderedDict(
             (
                 ("priority", 1),
                 ("loc", "http://example.com/"),
             )
         ))
-        dumped_result = SitemapEncoder(storage).dumps(indent=0)
+        dumped_result = SitemapEncoder(None).dumps(storage, indent=0)
         expected = '<?xml version="1.0" encoding="UTF-8"?>' \
                    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' \
                    '<url>' \
@@ -99,7 +99,7 @@ class TestStorage(TestCase):
         Check: Can add multiple addresses ?
         """
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
         storage.register_url("http://example.com/bb.html")
@@ -110,7 +110,7 @@ class TestStorage(TestCase):
         Check: Can remove  addresses ?
         """
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
         storage.unregister_url("http://example.com/aa.html")
@@ -121,7 +121,7 @@ class TestStorage(TestCase):
         Check: Can remove  non-existing addresses ?
         """
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         storage.register_url("http://example.com/")
         storage.register_url("http://example.com/aa.html")
         try:
@@ -136,7 +136,7 @@ class TestStorage(TestCase):
         Check: Can iterate all addresses right?
         """
         from backends.storage import UrlStorage
-        storage = UrlStorage()
+        storage = UrlStorage(None)
         links = [
             "http://example.com/",
             "http://example.com/aa.html",
