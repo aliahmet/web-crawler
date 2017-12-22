@@ -28,5 +28,4 @@ class HttpClient:
                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def can_crawl(self, response):
-        return self.is_html(response) and \
-               self.get_last_modified(response)
+        return self.is_html(response) and response.status_code == self.HTTP_RESPONSE_OK

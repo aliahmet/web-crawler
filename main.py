@@ -24,7 +24,7 @@ class WebCrawler():
     to_visit_queue_class = Queue
     visited_set_class = Set
 
-    def __init__(self, exclude_broken_links=False, keep_alive=False, is_master=False, diff_by_get_param=False):
+    def __init__(self, exclude_broken_links=False, keep_alive=False, is_master=False, diff_by_get_param=True):
         self.opts = self.Meta
         self.opts.keep_alive = keep_alive
         self.opts.exclude_broken_links = exclude_broken_links
@@ -90,8 +90,7 @@ class WebCrawler():
         while not self.to_visit.is_empty():
             current_page = self.to_visit.pop()
             if not current_page:
-                # Using locks, slows down multiple processes a lot.
-                # this is much faster
+                # Check for race condition
                 break
             logger.info("Visiting: %s" % current_page)
             response = self.http_client.get(current_page)
@@ -104,7 +103,6 @@ class WebCrawler():
                 continue
 
             if not self.http_client.can_crawl(response):
-                logger.info("Broken Link: %s" % current_page)
                 if not self.opts.exclude_broken_links:
                     self.unregister_url(current_page)
                 continue
