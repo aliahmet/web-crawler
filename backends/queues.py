@@ -1,4 +1,5 @@
 import os
+import queue
 
 
 class BaseQueue:
@@ -21,19 +22,19 @@ class BaseQueue:
 class Queue(BaseQueue):
     def __init__(self, crawler_opts):
         super().__init__(crawler_opts)
-        self.queue = []
+        self.queue = queue.Queue()
 
     def push(self, item):
-        self.queue.append(item)
+        self.queue.put(item)
 
     def pop(self):
-        return self.queue.pop()
+        return self.queue.get()
 
     def peek(self):
-        return self.queue[0]
+        return self.queue.queue[0]
 
     def is_empty(self):
-        return len(self.queue) == 0
+        return self.queue.empty()
 
 
 class RedisQueue(BaseQueue):
