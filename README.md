@@ -4,24 +4,26 @@ A simple web crawler to create sitemap of a given website.
 
 
 #### USAGE (bash):
-```
-main.py -u http://flask.pocoo.org/docs/0.12/index.html
+```bash
+python main.py -u http://flask.pocoo.org/docs/0.12/index.html
             # Generate sitemap of http://flask.pocoo.org/docs/0.12/ directory
-main.py -u http://flask.pocoo.org/docs/0.12/index.html -b http://flask.pocoo.org/docs/
+python main.py -u http://flask.pocoo.org/docs/0.12/index.html -b http://flask.pocoo.org/docs/
             # Generate sitemap of http://flask.pocoo.org/docs/ directory starting from /docs/0.12/index.html
-main.py -u ... -vvv
+python main.py -u ... -vvv
             # set logging to very verbose
-main.py -u ... -o sitemap.xml
+python main.py -u ... -o sitemap.xml
             # Write generated sitemap to sitemap.xml file
 ```
 #### USAGE (python):
 ```python
-
-crawler = WebCrawler()
+crawler = WebCrawler(is_master=True)
 crawler.crawl(url)
 result = crawler.dump()
+```
 
-# You can use your own backends
+You can use your own backends:
+
+```python
 class SuperFastCsvWebCrawler(WebCrawler):
     # Custom Backend Classes
     storage_class = SuperFastUrlStorage

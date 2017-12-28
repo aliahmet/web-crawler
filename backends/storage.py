@@ -1,3 +1,6 @@
+from collections import OrderedDict
+
+
 class BaseUrlStorage:
     def __init__(self, crawler_opts):
         self.crawler_opts = crawler_opts
@@ -14,6 +17,7 @@ class BaseUrlStorage:
     def items(self):
         raise NotImplemented("UrlStorage must have __iter__ method")
 
+
 class UrlStorage(BaseUrlStorage):
     """
     Wrapper for a dict object to store visited urls along
@@ -22,7 +26,7 @@ class UrlStorage(BaseUrlStorage):
 
     def __init__(self, crawler_opts):
         super().__init__(crawler_opts)
-        self.urls = {}
+        self.urls = OrderedDict()
 
     def register_url(self, url, props=None):
         props = props or {}
